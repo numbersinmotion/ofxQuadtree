@@ -8,6 +8,7 @@ class ofxQuadtreeNode {
     public:
     
         ofxQuadtreeNode(const ofRectangle& rect, int maximumItems);
+        ~ofxQuadtreeNode();
     
         bool put(shared_ptr<Node> pt);
         vector<shared_ptr<Node>>& get(const ofRectangle& rect, vector<shared_ptr<Node>>& vector);
@@ -33,6 +34,17 @@ ofxQuadtreeNode<Node>::ofxQuadtreeNode(const ofRectangle& rect, int maximumItems
     maxItems = maximumItems;
     bounds = rect;
     minSize = 0.0001;
+}
+
+template<class Node>
+ofxQuadtreeNode<Node>::~ofxQuadtreeNode() {
+    if (children != nullptr) {
+        for (const auto& child :* children) {
+            delete child;
+        }
+        delete children;
+        children = nullptr;
+    }
 }
 
 template<class Node>
